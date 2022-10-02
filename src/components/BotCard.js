@@ -9,26 +9,17 @@ const botTypeClasses = {
   Captain: "icon star",
 };
 
-function BotCard({ bot,deleteBot,addToMyBotArmy}) {
-  console.log(addToMyBotArmy)
- function  handleClick(selectedbot){
-   
-   addToMyBotArmy(selectedbot)
-    
- }
- function handleDelete(bot){
-   deleteBot(bot)
- }
- function showBoltSpecs(bot){
-   console.log(bot)
- }
+function BotCard({ bot,handleDelete,enListBots}) {
+ 
+ 
   return (
     <div className="ui column">
       <div
-      onDoubleClick={()=>showBoltSpecs(bot)}
+    
         className="ui card"
         key={bot.id}
-        onClick={() => handleClick(bot)}
+        onClick={() =>enListBots(bot)}
+        
       >
         <div className="image">
           <img alt="oh no!" src={bot.avatar_url} />
@@ -60,9 +51,11 @@ function BotCard({ bot,deleteBot,addToMyBotArmy}) {
             <div className="ui center aligned segment basic">
               <button
                 className="ui mini red button"
-                onClick={() =>
+                onClick={(e) =>{
+                  e.stopPropagation();
                   handleDelete(bot)
                 }
+              }
               >
                 x
               </button>

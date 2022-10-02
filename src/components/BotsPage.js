@@ -5,35 +5,36 @@ import BotCollection from "./BotCollection";
 function BotsPage() {
   //start here with your code for step one
   const [bots,setBots]=useState([])
-  const[selectedBots,setSelectedBots]=useState([])
+  
    useEffect(()=>{
     fetch("http://localhost:8002/bots")
     .then((response)=>response.json())
-    .then((data)=>setSelectedBots(data))
-   },[])
+    .then((data)=>setBots(data));
+   },[]);
 
-   function deletebot(bot) {
-    const filterbots=bots.filter(
-      (singlebot)=>singlebot.id !==bot.id
-    );
-    const deleteConfig={
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      }
+   function removeBot(bot) {
+    setBots(bots.map(b=>b.id===bot.id?{...b,army:false} :b));
+   }
+   
+  function enListBots(bot) { 
+    setBots(bots.map(b=>b.id===bot.id?{...b,army:false} :b));
     }
-    fetch(`https://localhost:8002/bots/${bot.id},deleteConfig`)
-        .then(()=>setBots(filterbots))
-  }
-  function addToMyBotArmy(bot) { 
-    setSelectedBots((prevbot) =>{
-      return[...prevbot]
-    })
+
+    function handleDelete(bot){
+      setBots(bots.filter(b => b.id !== bot.id))
   }
   return (
     <div>
-      <YourBotArmy bots={selectedBots} />
-      <BotCollection  addToMyBotArmy={addToMyBotArmy} deleteBot={deletebot} bots={bots}/>
+      <YourBotArmy 
+      bots={bots.filter(b=>b.army)} 
+      removeBot={removeBot}
+      selectedBot={enListBots}
+      />
+      <BotCollection 
+      bots={bots}
+      handleDelete={handleDelete}
+     enlistBots={enListBots}
+     />
     </div>
   )
 }
