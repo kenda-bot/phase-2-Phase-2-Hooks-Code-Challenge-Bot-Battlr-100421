@@ -1,19 +1,21 @@
 import React,{useEffect} from "react";
 import BotCard from "./BotCard";
 
-function YourBotArmy({bots}) {
+function YourBotArmy({bots,removeBot,selectedBot}) {
   //your bot army code here...
  
-const listArmy=bots.map(bot =>bot.army && (<BotCard  key={bot.id} bot={bot}/>))
+const listArmy=bots.map(bot => {
+  return (
+  <BotCard 
+   key={bot.id} 
+   bot={bot}
+   handleDelete={removeBot}
+   enListBots={selectedBot}
+   />
+   )
+  })
 
-useEffect(()=>{
-  fetch("http://localhost:8002/bots")
-  .then((response)=>response.json())
-  .then((data)=>
-    console.log(data))
- },[]
- );
- 
+
   return (
     <div className="ui segment inverted olive bot-army">
       <div className="ui five column grid">
