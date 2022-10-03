@@ -1,7 +1,7 @@
 import React from "react";
 import BotCard from "./BotCard";
 
-function BotCollection({bots,handleDelete,listBots}) {
+function BotCollection({bots,handleDelete,enListBots}) {
   // Your code here
   const displayBotCards = bots.map((bot)=>{
     return(
@@ -9,7 +9,7 @@ function BotCollection({bots,handleDelete,listBots}) {
      key={bot.id}
       bot={bot}
       handleDelete={handleDelete}
-      listBots={listBots}
+      enListBots={enListBots}
       />
     )    
   })

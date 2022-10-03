@@ -9,31 +9,41 @@ function BotsPage() {
    useEffect(()=>{
     fetch("http://localhost:8002/bots")
     .then((response)=>response.json())
-    .then((data)=>setBots(data));
-   },[]);
+    .then((data)=>{setBots(data) 
+      console.log(data)})
+   },[]
+   );
 
-   function removeBot(bot) {
-    setBots(bots.map(b=>b.id===bot.id?{...b,army:false} :b));
-   }
+
    
   function enListBots(bot) { 
-    setBots(bots.map(b=>b.id===bot.id?{...b,army:false} :b));
+    // setBots(bots.map(b=>b.id===bot.id?{...b,army:true} :b));
+    bot["army"]=true
+    console.log(bot)
     }
 
-    function handleDelete(bot){
-      setBots(bots.filter(b => b.id !== bot.id))
-  }
+    function handleDelete (bot){
+  
+      const filterbots = bots.filter((singlebot) => singlebot.id !==  bot.id);
+      const   deleteConfig =  {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            } 
+      }
+      fetch(`http://localhost:8002/bots/${bot.id}`,deleteConfig)
+        .then(()=>setBots(filterbots))
+    }
   return (
     <div>
       <YourBotArmy 
-      bots={bots.filter(b=>b.army)} 
-      removeBot={removeBot}
+      bots={bots}
       selectedBot={enListBots}
       />
       <BotCollection 
       bots={bots}
       handleDelete={handleDelete}
-     enlistBots={enListBots}
+     enListBots={enListBots}
      />
     </div>
   )
